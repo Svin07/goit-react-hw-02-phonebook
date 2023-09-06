@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { nanoid } from 'nanoid';
+// import { nanoid } from 'nanoid';
 import ContactList from './ContsctList/ContactList';
 
 export class App extends Component {
