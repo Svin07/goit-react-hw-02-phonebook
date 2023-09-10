@@ -1,9 +1,19 @@
+import ContactItem from 'components/ContactItem/ContactItem';
 import css from './ContactList.module.css';
+// import { Component } from 'react';
 
-export default function ContactList({ name }) {
+function ContactList({ contacts, handleDelete, filter }) {
   return (
-    <li className={css.contactlist}>
-      <p>{name}</p>
-    </li>
+    <ul className={css.contactlist}>
+      {(filter ?? contacts).map(contact => (
+        <ContactItem
+          key={contact.id}
+          contact={contact}
+          handleDelete={handleDelete}
+        />
+      ))}
+    </ul>
   );
 }
+
+export default ContactList;
