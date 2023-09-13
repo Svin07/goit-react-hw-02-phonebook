@@ -3,9 +3,6 @@ import { nanoid } from 'nanoid';
 import ContactList from './ContsctList/ContactList';
 import ContactForm from './ContactForm/ContactForm';
 import Filter from './Filter/Filter';
-const DEFAULT_STATE = {
-  filter: null,
-};
 
 export class App extends Component {
   state = {
@@ -15,11 +12,13 @@ export class App extends Component {
       { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
-    filter: null,
+    filter: '',
   };
 
   createContact = body => {
-    const isExist = this.state.contacts.find(el => el.name === body.name);
+    const isExist = this.state.contacts.find(
+      el => el.name.toLowerCase() === body.name.toLowerCase()
+    );
     if (isExist) {
       alert(`${body.name} is already in contacts.`);
       return;
@@ -31,24 +30,21 @@ export class App extends Component {
   };
 
   filterContact = filterQuery => {
-    this.setState(prev => ({
-      filter: prev.contacts.filter(el =>
-        el.name.toLowerCase().includes(filterQuery)
-      ),
-    }));
-    if (!filterQuery) {
-      this.setState(DEFAULT_STATE);
-    }
+    this.setState({
+      filter: filterQuery,
+    });
   };
 
   handleDelete = id => {
     this.setState(prev => ({
       contacts: prev.contacts.filter(contact => contact.id !== id),
     }));
+  };
 
-    // this.setState(prev => ({
-    //   filter: prev.filter.filter(filter => filter.id !== id),
-    // }));
+  getFilterAddContact = () => {
+    return this.state.contacts.filter(el =>
+      el.name.toLowerCase().includes(this.state.filter)
+    );
   };
 
   render() {
@@ -70,8 +66,7 @@ export class App extends Component {
           <h2>Contacts</h2>
           <Filter filterContact={this.filterContact} />
           <ContactList
-            filter={this.state.filter}
-            contacts={this.state.contacts}
+            contacts={this.getFilterAddContact()}
             handleDelete={this.handleDelete}
           ></ContactList>
         </div>
